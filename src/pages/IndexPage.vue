@@ -74,7 +74,7 @@ const meta = ref<Meta>({
             History
           </template> -->
         </q-fab-action>
-        <q-fab-action color="orange" external-label @click="onClick">
+        <q-fab-action color="orange" external-label @click="toQRCreate">
           <template v-slot:icon>
             <q-icon name="create" />
           </template>
@@ -105,7 +105,9 @@ const meta = ref<Meta>({
         @click="toggleScan"
         />
         </div>
-        <div v-else @click="toggleScan">Hooray</div>
+        <div v-else @click="toggleScan">
+          It works!
+        </div>
       </div>
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
             <q-btn fab icon="shopping_cart" color="accent" @click="toCart">
@@ -119,7 +121,7 @@ const meta = ref<Meta>({
 import {ref} from 'vue';
 import {useRouter} from 'vue-router';
 
-import {useCartStore} from '../stores/cartStore'
+import {useCartStore} from '../stores/cartStore';
 
 const router = useRouter();
 const cartStore = useCartStore()
@@ -127,6 +129,7 @@ const cartStore = useCartStore()
 const logo = ref('https://picsum.photos/500/300')
 //const fab2 = ref(true);
 const scanset = ref(false);
+
 function onClick () {
 console.log('Clicked...')
 }
@@ -137,6 +140,10 @@ router.push({path: 'account'})
 
 function toCart() {
 router.push({path: 'cart'})
+}
+
+function toQRCreate() {
+router.push({path: 'qr-generator'})
 }
 
 function toggleScan() {

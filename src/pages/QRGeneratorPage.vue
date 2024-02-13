@@ -14,8 +14,10 @@
                 </div>
             </q-form>
         </div>
-        
-            <qrcode-vue :value="qrValue" :size="displaySize" level="H"/>
+
+        <div v-if="generated" style="width: 150px;height: 80px;text-wrap: wrap;">
+            {{ qrValue }}
+        </div>
        
     </q-page>
 </template>
@@ -23,15 +25,14 @@
 <script setup>
 import { ref } from 'vue';
 import {useRouter} from 'vue-router';
-import QrcodeVue from 'qrcode-vue';
 
 const router = useRouter();
 
-const qrValue = ref('Placeholder value');
+const qrValue = ref('');
 const company = ref('');
 const name = ref('')
 const price = ref(0)
-const displaySize = ref(100);
+const generated = ref(false);
 
 
 
@@ -39,7 +40,7 @@ function genCode() {
     console.log(`${company.value}: ${name.value} - ${price.value}`);
     qrValue.value += `${company.value}: ${name.value} - ${price.value}`;
 
-   // generated.value = true;
+    generated.value = true;
     console.log('QRCode: ', qrValue.value)
     console.log('Type: ', typeof qrValue.value)
     company.value = '';

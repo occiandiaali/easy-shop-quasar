@@ -122,7 +122,7 @@ import {useRouter} from 'vue-router';
 const router = useRouter();
 
 const logo = ref('https://picsum.photos/500/300')
-const fab2 = ref(true);
+//const fab2 = ref(true);
 const scanset = ref(false);
 function onClick () {
 console.log('Clicked...')

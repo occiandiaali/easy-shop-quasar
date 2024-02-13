@@ -9,7 +9,9 @@ const routes: RouteRecordRaw[] = [
       {path: 'account', component: () => import('pages/AccountPage.vue')},
       {path: 'cart', component: () => import('pages/CartPage.vue')}
     ],
+    
   },
+  {path: '/login', component: () => import('pages/LoginPage.vue')},
 
   // Always leave this as last one,
   // but you can also remove it

@@ -15,20 +15,34 @@
             </q-form>
         </div>
 
-        <div v-if="generated" style="width: 150px;height: 80px;text-wrap: wrap;">
+        <!-- <div v-if="generated" style="width: 150px;height: 80px;text-wrap: wrap;">
             {{ qrValue }}
+        </div> -->
+        <div style="margin-left: 80px;">
+            <q-icon name="print" size="32px" color="secondary"/>
+            <qrcode-vue 
+        :value="value"
+        :level="level"
+        :render-as="renderAs"
+        style="margin-left: 24px;outline: dashed 1px red;"
+        />
         </div>
        
     </q-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import {useRouter} from 'vue-router';
 
+import QrcodeVue, {Level, RenderAs} from 'qrcode.vue'
+
 const router = useRouter();
 
-const qrValue = ref('');
+//const qrValue = ref('');
+const value = ref('');
+const level = ref<Level>('M');
+const renderAs = ref<RenderAs>('svg');
 const company = ref('');
 const name = ref('')
 const price = ref(0)
@@ -38,11 +52,11 @@ const generated = ref(false);
 
 function genCode() {
     console.log(`${company.value}: ${name.value} - ${price.value}`);
-    qrValue.value += `${company.value}: ${name.value} - ${price.value}`;
+    value.value += `${company.value}: ${name.value} - ${price.value}`;
 
     generated.value = true;
-    console.log('QRCode: ', qrValue.value)
-    console.log('Type: ', typeof qrValue.value)
+    console.log('QRCode: ', value.value)
+    console.log('Type: ', typeof value.value)
     company.value = '';
     name.value = '';
     price.value = 0;

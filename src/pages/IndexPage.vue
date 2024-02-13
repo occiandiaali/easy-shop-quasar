@@ -48,7 +48,7 @@ const meta = ref<Meta>({
       style="height: 60px;max-width: 60px;border-radius: 100%;margin: 16px;"
       alt="easy-shop"
       />
-      <div class="q-ma-md fixed-top-right">
+      <div class="q-ma-md fixed-top-right" id="fab-div">
         <q-fab color="purple" direction="down" >
         <template v-slot:icon="{ opened }">
           <q-icon :class="{ 'example-fab-animate--hover': opened !== true }" name="keyboard_arrow_down" />
@@ -106,7 +106,12 @@ const meta = ref<Meta>({
         />
         </div>
         <div v-else @click="toggleScan">
-          It works!
+          <qrcode-stream
+          style="height: 350px;"
+          :track="paintBoundingBox"
+           @detect="onDetect"
+           @error="onError"
+           ></qrcode-stream>
         </div>
       </div>
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
@@ -123,12 +128,34 @@ import {useRouter} from 'vue-router';
 
 import {useCartStore} from '../stores/cartStore';
 
+import {QrcodeStream} from 'vue-qrcode-reader';
+
 const router = useRouter();
 const cartStore = useCartStore()
 
 const logo = ref('https://picsum.photos/500/300')
 //const fab2 = ref(true);
 const scanset = ref(false);
+
+// const options = [
+//   {text: 'outline', value: paintOutline},
+//   {text: 'bounding box', value: paintBoundingBox},
+// ];
+
+// function paintOutline() {
+//   null
+// }
+
+function paintBoundingBox(detectedCodes, ctx) {
+  for (const dc of detectedCodes) {
+    const {
+      boundingBox: {x, y, width, height}
+    } = dc
+    ctx.lineWidth = 2
+    ctx.strokeStyle = '#007bff'
+    ctx.strokeRect(x, y, width, height)
+  }
+}
 
 function onClick () {
 console.log('Clicked...')
@@ -150,6 +177,15 @@ function toggleScan() {
   scanset.value = !scanset.value
 }
 
+function onDetect(detected) {
+  const {rawValue} = detected;
+  console.log('Code: ', rawValue)
+}
+function onError(err) {
+ 
+  console.log('Err: ', err.name)
+}
+
 </script>
 
 <style scoped>
@@ -159,6 +195,10 @@ function toggleScan() {
   border: 1px solid lightgray;
   border-radius: 18px;
   margin: 48px auto;
+}
+
+#fab-div {
+  z-index: 88;
 }
 
 .q-fab:hover .example-fab-animate--hover {

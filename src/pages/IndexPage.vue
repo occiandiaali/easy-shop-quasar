@@ -109,7 +109,7 @@ const meta = ref<Meta>({
       </div>
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
             <q-btn fab icon="shopping_cart" color="accent" @click="toCart">
-              <q-badge color="red" floating>0</q-badge>
+              <q-badge color="red" floating>{{ cartStore.totalItems }}</q-badge>
             </q-btn>
           </q-page-sticky>
   </q-page>
@@ -119,7 +119,10 @@ const meta = ref<Meta>({
 import {ref} from 'vue';
 import {useRouter} from 'vue-router';
 
+import {useCartStore} from '../stores/cartStore'
+
 const router = useRouter();
+const cartStore = useCartStore()
 
 const logo = ref('https://picsum.photos/500/300')
 //const fab2 = ref(true);

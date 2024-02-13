@@ -1,41 +1,16 @@
 # Easy Shop (easy-shop)
 
-Super shopping. Super easy.
+Super shopping. Super easy.  
 
-## Install the dependencies
-```bash
-yarn
-# or
-npm install
-```
+## Logo  
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
-quasar dev
-```
+<img src="https://github.com/occiandiaali/easy-shop-quasar/assets/40769994/b12eadef-572b-4d55-890e-3b1ea17564bb.jpg" width="240"> <img src="https://github.com/occiandiaali/easy-shop-quasar/assets/40769994/102ef262-32d2-47f8-9b65-646364187e78.jpg" width="240">
 
 
-### Lint the files
-```bash
-yarn lint
-# or
-npm run lint
-```
-
-
-### Format the files
-```bash
-yarn format
-# or
-npm run format
-```
+## Demo  
 
 
 
-### Build the app for production
-```bash
-quasar build
-```
+https://github.com/occiandiaali/easy-shop-quasar/assets/40769994/415faeef-cf7e-4a18-8c0f-53c83cc54c55
 
-### Customize the configuration
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+

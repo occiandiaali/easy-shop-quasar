@@ -122,7 +122,7 @@ const meta = ref<Meta>({
   </q-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {ref} from 'vue';
 import {useRouter} from 'vue-router';
 
@@ -137,7 +137,11 @@ const logo = ref('https://picsum.photos/500/300')
 //const fab2 = ref(true);
 const scanset = ref(false);
 
-const arr = ref([]);
+const arr = ref<{
+  co: string,
+  item: string,
+  price: number
+}[]>([]);
 const company = ref('');
 const name = ref('')
 const price = ref(0)
@@ -147,7 +151,7 @@ const price = ref(0)
 //   {text: 'bounding box', value: paintBoundingBox},
 // ];
 
-function paintOutline(detectedCodes, ctx) {
+function paintOutline(detectedCodes: any, ctx: { strokeStyle: string; beginPath: () => void; moveTo: (arg0: any, arg1: any) => void; lineTo: (arg0: any, arg1: any) => void; closePath: () => void; stroke: () => void; }) {
   for (const dc of detectedCodes) {
     const [firstPoint, ...otherPoints] = dc.cornerPoints
 
@@ -199,7 +203,7 @@ function toggleScan() {
   scanset.value = !scanset.value
 }
 
-function onDetect(detected) {
+function onDetect(detected: any) {
   for (const dc of detected) {
 
   const {rawValue} = dc;
@@ -208,12 +212,16 @@ function onDetect(detected) {
   //   alert('You cannot use this app outside of a WiseBuyer store!');
   // } 
   const a = JSON.parse(rawValue);
+  arr
   console.log('A: ', a);
-  a.map(v => {
+  a.map((v: { co: string; item: string; price: number; }) => {
     if (v.co !== 'WiseBuyers Supermart') {
       alert('You cannot use this app outside of a WiseBuyer store!');
     } else {
-      console.log(`Fields: ${v.co}: ${v.it} - ${v.pr}`);
+      console.log(`Fields: ${v.co}: ${v.item} - ${v.price}`);
+      cartStore.addItem(v)
+      // cartStore.items.push(v.it, v.pr);
+      // console.log('Cart: ', cartStore.items);
     }
     
   })
@@ -233,7 +241,7 @@ function onDetect(detected) {
   // arr.value.push(rawValue[0], rawValue[1], rawValue[2]);
   // console.log('Arr: ', arr.value)
 }
-function onError(err) {
+function onError(err: { name: any; }) {
  
   console.log('Err: ', err.name)
 }

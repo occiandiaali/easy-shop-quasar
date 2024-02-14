@@ -2,7 +2,11 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const useCartStore = defineStore('cartStore', () => {
+    const company = ref('');
+    const email = ref('');
+    const username = ref('')
     const items = ref([]);
+
     const totalItems = ref(0);
     const totalCost = ref(0);
 
@@ -26,5 +30,5 @@ export const useCartStore = defineStore('cartStore', () => {
         totalCost.value -= item.price;
     };
 
-    return {addItem, items, removeItem, totalCost, totalItems}
+    return {addItem, company, email, items, removeItem, totalCost, totalItems, username}
 })

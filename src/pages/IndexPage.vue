@@ -66,7 +66,7 @@ const meta = ref<Meta>({
             Account
           </template> -->
         </q-fab-action>
-        <q-fab-action color="secondary" external-label @click="onClick">
+        <q-fab-action color="secondary" external-label @click="toLogin">
           <template v-slot:icon>
             <q-icon name="history" />
           </template>
@@ -108,7 +108,7 @@ const meta = ref<Meta>({
         <div v-else @click="toggleScan">
           <qrcode-stream
           style="height: 350px;"
-          :track="paintBoundingBox"
+          :track="paintOutline"
            @detect="onDetect"
            @error="onError"
            ></qrcode-stream>
@@ -137,25 +137,43 @@ const logo = ref('https://picsum.photos/500/300')
 //const fab2 = ref(true);
 const scanset = ref(false);
 
+const arr = ref([]);
+const company = ref('');
+const name = ref('')
+const price = ref(0)
+
 // const options = [
 //   {text: 'outline', value: paintOutline},
 //   {text: 'bounding box', value: paintBoundingBox},
 // ];
 
-// function paintOutline() {
-//   null
-// }
-
-function paintBoundingBox(detectedCodes, ctx) {
+function paintOutline(detectedCodes, ctx) {
   for (const dc of detectedCodes) {
-    const {
-      boundingBox: {x, y, width, height}
-    } = dc
-    ctx.lineWidth = 2
-    ctx.strokeStyle = '#007bff'
-    ctx.strokeRect(x, y, width, height)
+    const [firstPoint, ...otherPoints] = dc.cornerPoints
+
+  ctx.strokeStyle = 'red'
+
+ctx.beginPath()
+ctx.moveTo(firstPoint.x, firstPoint.y)
+for (const { x, y } of otherPoints) {
+  ctx.lineTo(x, y)
+}
+ctx.lineTo(firstPoint.x, firstPoint.y)
+ctx.closePath()
+ctx.stroke()
   }
 }
+
+// function paintBoundingBox(detectedCodes, ctx) {
+//   for (const dc of detectedCodes) {
+//     const {
+//       boundingBox: {x, y, width, height}
+//     } = dc
+//     ctx.lineWidth = 2
+//     ctx.strokeStyle = '#007bff'
+//     ctx.strokeRect(x, y, width, height)
+//   }
+// }
 
 function onClick () {
 console.log('Clicked...')
@@ -173,13 +191,47 @@ function toQRCreate() {
 router.push({path: 'qr-generator'})
 }
 
+function toLogin() {
+router.push({path: 'login'})
+}
+
 function toggleScan() {
   scanset.value = !scanset.value
 }
 
 function onDetect(detected) {
-  const {rawValue} = detected;
-  console.log('Code: ', rawValue)
+  for (const dc of detected) {
+
+  const {rawValue} = dc;
+  // if (rawValue[0] != 'WiseBuyers Supermart') {
+  //  // scanset.value = false;
+  //   alert('You cannot use this app outside of a WiseBuyer store!');
+  // } 
+  const a = JSON.parse(rawValue);
+  console.log('A: ', a);
+  a.map(v => {
+    if (v.co !== 'WiseBuyers Supermart') {
+      alert('You cannot use this app outside of a WiseBuyer store!');
+    } else {
+      console.log(`Fields: ${v.co}: ${v.it} - ${v.pr}`);
+    }
+    
+  })
+  // console.log('Code: ', rawValue);
+  // console.log('Type: ', typeof rawValue);
+
+  // console.log('Code: ', JSON.parse(rawValue));
+  // console.log('Type: ', typeof JSON.parse(rawValue));
+  // const {co, it, pr} = rawValue;
+   
+  
+  //console.log(`Fields: ${rawValue[0]}: ${rawValue[1]} - ${rawValue[2]}`);
+
+ // arr.value = rawValue.split(' ')
+  }
+  scanset.value = false;
+  // arr.value.push(rawValue[0], rawValue[1], rawValue[2]);
+  // console.log('Arr: ', arr.value)
 }
 function onError(err) {
  

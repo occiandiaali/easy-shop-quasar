@@ -54,11 +54,11 @@
 
       <q-card-actions align="around">
         <q-btn flat>
-        <q-icon name="add" size="18px" @click="cartStore.addItem(item)"/>
+        <q-icon name="add" size="18px" @click="incrementItem(item)"/>
         </q-btn>
         <div class="text-subtitle1">NGN {{ new Intl.NumberFormat('en-NG').format(item.pr) }}</div>
         <q-btn flat>
-        <q-icon name="remove" size="18px" @click="cartStore.removeItem(item)"/>
+        <q-icon name="remove" size="18px" @click="decrementItem(item)"/>
         </q-btn>
       </q-card-actions>
     </q-card>
@@ -90,6 +90,26 @@ const cartTotal = ref(0);
 
 function back() {
     router.back();
+}
+
+const incrementItem = (item) => {
+let target = cart.value.filter(curr => curr.id === item.id)[0];
+console.log('before up: ', target.pr);
+if (target) {
+  item.pr *= 2;
+  cartTotal.value += item.pr;
+}
+console.log('after up: ', target.pr)
+}
+
+const decrementItem = (item) => {
+let target = cart.value.filter(curr => curr.id === item.id)[0];
+console.log('before down: ', target.pr);
+if (target) {
+  item.pr /= 2;
+  cartTotal.value -= item.pr;
+}
+console.log('after down: ', target.pr)
 }
 
 onMounted(() => {

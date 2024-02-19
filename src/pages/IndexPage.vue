@@ -45,7 +45,7 @@ const meta = ref<Meta>({
   <q-page>
     <q-img 
       :src="logo"
-      style="height: 60px;max-width: 60px;border-radius: 100%;margin: 16px;"
+      style="height: 40px;max-width: 120px;border-radius: 100%;margin: 16px;"
       alt="easy-shop"
       />
       <div class="q-ma-md fixed-top-right" id="fab-div">
@@ -104,6 +104,7 @@ const meta = ref<Meta>({
         style="margin-top: 60px;margin-left: 50px;"
         @click="toggleScan"
         />
+
         </div>
         <div v-else @click="toggleScan">
           <qrcode-stream
@@ -114,6 +115,7 @@ const meta = ref<Meta>({
            ></qrcode-stream>
         </div>
       </div>
+      <span style="font-size: large;margin-left: 50px;font-weight: 500;">Tap the camera image to start</span>
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
             <q-btn fab icon="shopping_cart" color="accent" @click="toCart">
               <q-badge color="red" floating>{{ cartStore.totalItems }}</q-badge>
@@ -123,28 +125,33 @@ const meta = ref<Meta>({
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 
 import {useCartStore} from '../stores/cartStore';
 
 import {QrcodeStream} from 'vue-qrcode-reader';
 
-const router = useRouter();
-const cartStore = useCartStore()
+import logo from 'assets/logo-light.jpg'
 
-const logo = ref('https://picsum.photos/500/300')
+const router = useRouter();
+const cartStore = useCartStore();
+
+
+
+//const logo = ref('https://picsum.photos/500/300')
 //const fab2 = ref(true);
+
 const scanset = ref(false);
 
-const arr = ref<{
-  co: string,
-  item: string,
-  price: number
-}[]>([]);
-const company = ref('');
-const name = ref('')
-const price = ref(0)
+// const arr = ref<{
+//   co: string,
+//   item: string,
+//   price: number
+// }[]>([]);
+// const company = ref('');
+// const name = ref('')
+// const price = ref(0)
 
 // const options = [
 //   {text: 'outline', value: paintOutline},
@@ -203,6 +210,18 @@ function toggleScan() {
   scanset.value = !scanset.value
 }
 
+function createRandomString(length:number) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  const randomArray = new Uint8Array(length);
+  crypto.getRandomValues(randomArray);
+  randomArray.forEach((number) => {
+    result += chars[number % chars.length];
+  });
+  return result;
+}
+
+
 function onDetect(detected: any) {
   for (const dc of detected) {
 
@@ -212,14 +231,19 @@ function onDetect(detected: any) {
   //   alert('You cannot use this app outside of a WiseBuyer store!');
   // } 
   const a = JSON.parse(rawValue);
-  arr
+  
   console.log('A: ', a);
-  a.map((v: { co: string; item: string; price: number; }) => {
+  a.map((v: { co: string; it: string; pr: number, id: string}) => {
     if (v.co !== 'WiseBuyers Supermart') {
       alert('You cannot use this app outside of a WiseBuyer store!');
     } else {
-      console.log(`Fields: ${v.co}: ${v.item} - ${v.price}`);
-      cartStore.addItem(v)
+      console.log(`Fields: ${v.co}: ${v.it} - ${v.pr}`);
+      console.log('Items: ', v);
+      console.log('ItemsArr: ', Object.values(v));
+      v.id = createRandomString(8)
+      //cartStore.addItem(v)
+      cartStore.addToCart(v);
+      console.log('ID: ', v.id);
       // cartStore.items.push(v.it, v.pr);
       // console.log('Cart: ', cartStore.items);
     }
@@ -245,6 +269,12 @@ function onError(err: { name: any; }) {
  
   console.log('Err: ', err.name)
 }
+
+// onMounted(() => {
+//   const strCartCount = localStorage.getItem('totalItems');
+//   let count = JSON.parse(strCartCount || '0');
+//   cartStore.totalItems = count;
+// })
 
 </script>
 

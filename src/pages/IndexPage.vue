@@ -20,12 +20,12 @@
             <q-icon name="person" @click="toAccount"/>
           </template>
         </q-fab-action>
-        <q-fab-action color="secondary" external-label @click="toLogin">
+        <q-fab-action color="secondary" external-label @click="toHistory">
           <template v-slot:icon>
             <q-icon name="history" />
           </template>
         </q-fab-action>
-        <q-fab-action color="orange" external-label @click="toQRCreate">
+        <q-fab-action v-if="uName === 'admin'" color="orange" external-label @click="toQRCreate">
           <template v-slot:icon>
             <q-icon name="create" />
           </template>
@@ -39,8 +39,13 @@
         style="margin-top: 60px;margin-left: 50px;"
         @click="toggleScan"
         />
-
         </div>
+        <!-- <div v-else-if="scanning">
+          <q-spinner-hourglass
+        color="purple"
+        size="4em"
+      />
+        </div> -->
         <div v-else @click="toggleScan">
           <qrcode-stream
           style="height: 350px;"
@@ -50,7 +55,7 @@
            ></qrcode-stream>
         </div>
       </div>
-      <span style="font-size: large;margin-left: 50px;font-weight: 500;">Tap the camera image to start</span>
+      <span style="font-size: large;margin-left: 45px;font-weight: 500;">Tap the camera icon to scan</span>
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
             <q-btn fab icon="shopping_cart" color="accent" @click="toCart">
               <q-badge color="red" floating>{{ cartStore.totalItems }}</q-badge>
@@ -60,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 
 import {useCartStore} from '../stores/cartStore';
@@ -73,10 +78,11 @@ const router = useRouter();
 const cartStore = useCartStore();
 
 
-
+let uName = ref('')
 //const logo = ref('https://picsum.photos/500/300')
 
 const scanset = ref(false);
+const scanning = ref(false);
 
 // const options = [
 //   {text: 'outline', value: paintOutline},
@@ -116,23 +122,24 @@ console.log('Clicked...')
 }
 
 function toAccount() {
-router.push({path: 'account'})
+router.push({path: '/app/account'})
 }
 
 function toCart() {
-router.push({path: 'cart'})
+router.push({path: '/app/cart'})
 }
 
 function toQRCreate() {
-router.push({path: 'qr-generator'})
+router.push({path: '/app/qr-generator'})
 }
 
-function toLogin() {
-router.push({path: 'login'})
+function toHistory() {
+router.push({path: '/app/history'})
 }
 
 function toggleScan() {
   scanset.value = !scanset.value
+  scanning.value = true;
 }
 
 function onDetect(detected: any) {
@@ -149,6 +156,7 @@ function onDetect(detected: any) {
     
   })
   }
+  scanning.value = false;
   scanset.value = false;
 }
 function onError(err: { name: any; }) {
@@ -156,7 +164,10 @@ function onError(err: { name: any; }) {
   console.log('Err: ', err.name)
 }
 
-
+onMounted(() => {
+  let uTemp = localStorage.getItem('username') || '';
+  uName.value = uTemp;
+})
 </script>
 
 <style scoped>

@@ -20,9 +20,10 @@ export const useCartStore = defineStore('cartStore', () => {
     function addToCart(obj: any) {
         if (company.value !== 'WiseBuyers Supermart') {
             alert('You cannot use this app outside of a WiseBuyer store!');
+            return;
         } else {
             if(items.value.find(c => c.id === obj.id)) {
-            alert('In cart already!');
+            alert('This item is already in your cart!');
         } else {
             items.value.unshift(obj);
           //  localStorage.setItem('cart', JSON.stringify(items.value));

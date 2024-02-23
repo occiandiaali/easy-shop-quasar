@@ -52,16 +52,23 @@
   </template>
 
   <script setup>
-  import {ref} from 'vue'
+  import {ref} from 'vue';
+  import {useRouter} from 'vue-router';
+
+  const router = useRouter();
 
   const slide = ref('style');
   const username = ref('')
   const email = ref('')
   const lorem = 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque voluptatem totam, architecto cupiditate officia rerum, error dignissimos praesentium libero ab nemo provident incidunt ducimus iusto perferendis porro earum. Totam, numquam?';
+  //let btnDisabled = ref(username.value === '' && email.value === '')
 
   function onContinue() {
+    localStorage.setItem('username', username.value);
+    router.push({path: 'app'});
     console.log(`Username: ${username.value} - ${email.value}`);
     username.value = '';
     email.value = '';
+
   }
 </script>

@@ -1,46 +1,3 @@
-<!-- <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
-  </q-page>
-</template>
-
-<script setup lang="ts">
-import { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
-import { ref } from 'vue';
-
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1'
-  },
-  {
-    id: 2,
-    content: 'ct2'
-  },
-  {
-    id: 3,
-    content: 'ct3'
-  },
-  {
-    id: 4,
-    content: 'ct4'
-  },
-  {
-    id: 5,
-    content: 'ct5'
-  }
-]);
-const meta = ref<Meta>({
-  totalCount: 1200
-});
-</script> -->
-
 <template>
   <q-page>
     <q-img 
@@ -62,40 +19,18 @@ const meta = ref<Meta>({
           <template v-slot:icon>
             <q-icon name="person" @click="toAccount"/>
           </template>
-          <!-- <template v-slot:label>
-            Account
-          </template> -->
         </q-fab-action>
         <q-fab-action color="secondary" external-label @click="toLogin">
           <template v-slot:icon>
             <q-icon name="history" />
           </template>
-          <!-- <template v-slot:label>
-            History
-          </template> -->
         </q-fab-action>
         <q-fab-action color="orange" external-label @click="toQRCreate">
           <template v-slot:icon>
             <q-icon name="create" />
           </template>
-          <!-- <template v-slot:label>
-            Create QR
-          </template> -->
         </q-fab-action>
       </q-fab>
-        <!-- <q-fab
-        v-model="fab2"
-        square
-        vertical-actions-align="right"
-        color="secondary"
-        glossy
-        icon="keyboard_arrow_down"
-        direction="down"
-      >
-        <q-fab-action square color="primary" @click="toAccount" icon="person" label="Account" label-position="left" />
-        <q-fab-action square color="secondary" @click="onClick" icon="history" label="History" label-position="left" />
-        <q-fab-action glossy square color="orange" @click="onClick" icon="create" label="Create QR" label-position="left" />
-      </q-fab> -->
       </div>
   
       <div class="display-div">
@@ -125,7 +60,7 @@ const meta = ref<Meta>({
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from 'vue';
+import {ref} from 'vue';
 import {useRouter} from 'vue-router';
 
 import {useCartStore} from '../stores/cartStore';
@@ -140,18 +75,8 @@ const cartStore = useCartStore();
 
 
 //const logo = ref('https://picsum.photos/500/300')
-//const fab2 = ref(true);
 
 const scanset = ref(false);
-
-// const arr = ref<{
-//   co: string,
-//   item: string,
-//   price: number
-// }[]>([]);
-// const company = ref('');
-// const name = ref('')
-// const price = ref(0)
 
 // const options = [
 //   {text: 'outline', value: paintOutline},
@@ -210,71 +135,27 @@ function toggleScan() {
   scanset.value = !scanset.value
 }
 
-function createRandomString(length:number) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  const randomArray = new Uint8Array(length);
-  crypto.getRandomValues(randomArray);
-  randomArray.forEach((number) => {
-    result += chars[number % chars.length];
-  });
-  return result;
-}
-
-
 function onDetect(detected: any) {
   for (const dc of detected) {
-
   const {rawValue} = dc;
-  // if (rawValue[0] != 'WiseBuyers Supermart') {
-  //  // scanset.value = false;
-  //   alert('You cannot use this app outside of a WiseBuyer store!');
-  // } 
   const a = JSON.parse(rawValue);
   
   console.log('A: ', a);
-  a.map((v: { co: string; it: string; pr: number, id: string}) => {
-    if (v.co !== 'WiseBuyers Supermart') {
-      alert('You cannot use this app outside of a WiseBuyer store!');
-    } else {
-      console.log(`Fields: ${v.co}: ${v.it} - ${v.pr}`);
-      console.log('Items: ', v);
-      console.log('ItemsArr: ', Object.values(v));
-      v.id = createRandomString(8)
-      //cartStore.addItem(v)
+    a.map((v: { name: string; price: number, id: string, qty: number}) => {
+      v.qty = 1;
       cartStore.addToCart(v);
-      console.log('ID: ', v.id);
-      // cartStore.items.push(v.it, v.pr);
-      // console.log('Cart: ', cartStore.items);
-    }
+      console.log('AddedToCart: ', v);
+      console.log('Current Cart: ', cartStore.items)
     
   })
-  // console.log('Code: ', rawValue);
-  // console.log('Type: ', typeof rawValue);
-
-  // console.log('Code: ', JSON.parse(rawValue));
-  // console.log('Type: ', typeof JSON.parse(rawValue));
-  // const {co, it, pr} = rawValue;
-   
-  
-  //console.log(`Fields: ${rawValue[0]}: ${rawValue[1]} - ${rawValue[2]}`);
-
- // arr.value = rawValue.split(' ')
   }
   scanset.value = false;
-  // arr.value.push(rawValue[0], rawValue[1], rawValue[2]);
-  // console.log('Arr: ', arr.value)
 }
 function onError(err: { name: any; }) {
  
   console.log('Err: ', err.name)
 }
 
-// onMounted(() => {
-//   const strCartCount = localStorage.getItem('totalItems');
-//   let count = JSON.parse(strCartCount || '0');
-//   cartStore.totalItems = count;
-// })
 
 </script>
 

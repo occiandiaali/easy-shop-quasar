@@ -4,11 +4,11 @@
         <div class="q-pa-md">
             <h3>Generate QR Code</h3>
             <q-form @submit="genCode" class="q-gutter-md">
-                <q-input hint="Company name" v-model="company"/>
+                <!-- <q-input hint="Company name" v-model="company"/> -->
                 <q-input label="Item name *" 
-                v-model="name"
+                v-model="itemName"
                 hint="6-pack stainless steel spoons" />
-                <q-input label="Item price *" hint="9.99" v-model="price"/>
+                <q-input label="Item price *" hint="9.99" v-model="itemPrice"/>
                 <div class="q-mt-md q-ml-lg">
                     <q-btn label="Generate" color="secondary" type="submit"/>
                 </div>
@@ -34,37 +34,38 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import {useRouter} from 'vue-router';
-//import {useCartStore} from '../stores/cartStore'
 
 import QrcodeVue, {Level, RenderAs} from 'qrcode.vue'
 
 const router = useRouter();
-//const cartStore = useCartStore()
 
-//const qrValue = ref('');
+function createRandomString(length:number) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  const randomArray = new Uint8Array(length);
+  crypto.getRandomValues(randomArray);
+  randomArray.forEach((number) => {
+    result += chars[number % chars.length];
+  });
+  return result;
+}
+
 let value = ref('');
 let valueObj = ref<{
-    co: string,
-    it: string,
-    pr: number
+    id: string,
+    item: string,
+    price: number
 }[]>([]);
 const arr = ref<(string|number)[]>([])
 const level = ref<Level>('M');
 const renderAs = ref<RenderAs>('svg');
-const company = ref('');
-const name = ref('')
-const price = ref(0)
-//const generated = ref(false);
+const itemName = ref('')
+const itemPrice = ref(0)
+
 
 function genCode() {
-    console.log(`${company.value} ${name.value} ${price.value}`);
-    arr.value.push(company.value, name.value, price.value)
-    valueObj.value.push({co: company.value, it: name.value, pr: price.value})
-   // value.value = `${company.value} ${name.value} ${price.value}`;
+    valueObj.value.push({id: createRandomString(8), item: itemName.value, price: itemPrice.value})
    value.value = JSON.stringify(valueObj.value);
-
-
-  //  generated.value = true;
 
     console.log('value: ', value.value);
  
@@ -75,10 +76,8 @@ function genCode() {
 
     arr.value = [];
     valueObj.value = [];
-   // value.value = '';
-    company.value = '';
-    name.value = '';
-    price.value = 0;
+    itemName.value = '';
+    itemPrice.value = 0;
 
 }
 

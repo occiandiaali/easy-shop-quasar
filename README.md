@@ -8,9 +8,15 @@ Super shopping. Super easy.
 
 
 ## Demo  
+https://github.com/occiandiaali/easy-shop-quasar/assets/40769994/7bfbb5dd-c706-4e3f-aeed-ba0bd228be3d
+
+
+
+https://github.com/occiandiaali/easy-shop-quasar/assets/40769994/f6663da2-2a98-42e7-a536-c2f60516a5c3
 
 
 
 https://github.com/occiandiaali/easy-shop-quasar/assets/40769994/415faeef-cf7e-4a18-8c0f-53c83cc54c55
+
 
 

@@ -13,7 +13,7 @@
                 
                     <q-card class="my-card" style="margin-bottom: 16px;" v-for="item in cart" :key="item.id">
       <q-card-section class="bg-purple text-white">
-        <div class="text-h6">{{ item.item }}</div>
+        <div class="text-h6">{{ item.item }} - <span style="font-size: 12px;"> {{ item.price }}</span></div>
       </q-card-section>
 
       <q-card-actions align="around">

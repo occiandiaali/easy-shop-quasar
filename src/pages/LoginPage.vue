@@ -9,7 +9,12 @@
         class="rounded-borders"
       >
         <q-carousel-slide name="style" class="column no-wrap flex-center">
-          <q-icon name="style" color="primary" size="56px" />
+          <!-- <q-icon name="style" color="primary" size="56px" /> -->
+              <q-img 
+      :src="logo"
+      style="height: 64px;max-width: 150px;border-radius: 100%;margin: 16px;"
+      alt="easy-shop"
+      />
           <div class="q-mt-md text-center">
             {{ lorem }}
           </div>
@@ -31,7 +36,7 @@
           <div class="q-mt-md text-center">
             <q-input outlined v-model="username" label="Username" /><br/>
             <q-input outlined v-model="email" label="Email" /><br/>
-            <q-btn color="purple" label="Continue" @click="onContinue"/>
+            <q-btn :disable="!username" color="purple" label="Continue" @click="onContinue"/>
           </div>
         </q-carousel-slide>
       </q-carousel>
@@ -54,6 +59,7 @@
   <script setup>
   import {ref} from 'vue';
   import {useRouter} from 'vue-router';
+  import logo from 'assets/logo-light.jpg'
 
   const router = useRouter();
 

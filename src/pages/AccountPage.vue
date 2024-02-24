@@ -1,6 +1,7 @@
 <template>
     <q-page>
         <q-icon name="arrow_back" @click="back" size="28px" class="q-pa-md"/>
+            <p v-if="username" style="margin: 22px;">Hello, {{ username }}</p>
         <div class="q-pa-md">
             <h4>Account Page</h4>
             <q-form
@@ -43,7 +44,7 @@
 <script setup>
 //import {useQuasar} from 'quasar'
 import {useRouter} from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const router = useRouter();
 
@@ -52,6 +53,7 @@ const router = useRouter();
 const name = ref(null)
 const age = ref(null)
 const accept = ref(false)
+let username = ref('')
 
 function back() {
     router.back();
@@ -63,4 +65,9 @@ function onSubmit() {
 function onReset() {
     console.log()
 }
+
+onMounted(() => {
+  let str = localStorage.getItem('username');
+  username.value = str;
+})
 </script>

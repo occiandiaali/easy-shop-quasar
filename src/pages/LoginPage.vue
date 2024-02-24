@@ -32,11 +32,16 @@
           </div>
         </q-carousel-slide>
         <q-carousel-slide name="map" class="column no-wrap flex-center">
-          <q-icon name="terrain" color="primary" size="56px" />
+        <q-img 
+      :src="logo"
+      style="height: 64px;max-width: 150px;border-radius: 100%;margin: 16px;"
+      alt="easy-shop"
+      />
           <div class="q-mt-md text-center">
+            
             <q-input outlined v-model="username" label="Username" /><br/>
             <q-input outlined v-model="email" label="Email" /><br/>
-            <q-btn :disable="!username" color="purple" label="Continue" @click="onContinue"/>
+            <q-btn :disable="!username && !email" color="purple" label="Continue" @click="onContinue"/>
           </div>
         </q-carousel-slide>
       </q-carousel>
@@ -71,6 +76,7 @@
 
   function onContinue() {
     localStorage.setItem('username', username.value);
+    localStorage.setItem('useremail', email.value);
     router.push({path: 'app'});
     console.log(`Username: ${username.value} - ${email.value}`);
     username.value = '';

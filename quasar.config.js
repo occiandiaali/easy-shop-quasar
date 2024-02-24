@@ -10,7 +10,7 @@
 
 
 const { configure } = require('quasar/wrappers');
-
+require('dotenv').config().parsed;
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -58,6 +58,9 @@ module.exports = configure(function (/* ctx */) {
       target: {
         browser: [ 'es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1' ],
         node: 'node16'
+      },
+      env: {
+        PAYSTACK_KEY: process.env.PAYSTACK_KEY
       },
 
       vueRouterMode: 'hash', // available values: 'hash', 'history'

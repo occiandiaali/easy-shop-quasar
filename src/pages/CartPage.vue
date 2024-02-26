@@ -13,16 +13,17 @@
                 
                     <q-card class="my-card" style="margin-bottom: 16px;" v-for="item in cart" :key="item.id">
       <q-card-section class="bg-purple text-white">
-        <div class="text-h6">{{ item.item }} - <span style="font-size: 12px;"> {{ item.price }}</span></div>
+        <div class="text-h6">{{ item.item }}</div>
+        <span style="font-size: 12px;"> {{ item.price }} naira each</span>
       </q-card-section>
 
       <q-card-actions align="around">
         <q-btn flat>
-        <q-icon name="add" size="18px" @click="increment(item)"/>
+        <q-icon name="add_circle" size="26px" @click="increment(item)"/>
         </q-btn>
         <div class="text-subtitle1 text-bold">{{ item.qty }}</div>
         <q-btn flat>
-        <q-icon name="remove" size="18px" @click="decrement(item)"/>
+        <q-icon name="remove_circle" size="26px" @click="decrement(item)"/>
         </q-btn>
       </q-card-actions>
     </q-card>
@@ -73,7 +74,7 @@ function decrement(item) {
     cartTotal.value -= Number(item.price);
   } else {
         if (window.confirm('You want to remove this item from your cart?')) {
-   cartTotal.value -= Number(item.price);
+     cartTotal.value -= Number(item.price);
       cartStore.totalItems--;
       cart.value.splice(cart.value.indexOf(item), 1);
     }

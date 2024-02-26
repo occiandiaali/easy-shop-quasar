@@ -72,8 +72,7 @@
   const username = ref('')
   const email = ref('')
  // const lorem = 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque voluptatem totam, architecto cupiditate officia rerum, error dignissimos praesentium libero ab nemo provident incidunt ducimus iusto perferendis porro earum. Totam, numquam?';
-
-  const slide1Text = 'EasyShop makes your shopping experience..easier. Enjoy in-store shopping without the stress of standing on a queue when it is time to checkout.';
+   const slide1Text = 'EasyShop makes your shopping experience..easier. Enjoy in-store shopping without the stress of standing on a queue when it is time to checkout. Experience self-checkout in style.';
   const slide2Text = 'Scan the QR Code for the item you want to buy to add it to your cart automatically. Scan each item just once, then increment the quantity you want on your cart page.';
   const slide3Text = 'No need to stand in line for even one second to pay for your shopping. Use the in-app Paystack feature to make payment by card or transfer. Checkout your shopping in less than 15 seconds, with your receipt sent to the email you provide. Fast!'
   function onContinue() {

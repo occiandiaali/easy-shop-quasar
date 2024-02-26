@@ -167,6 +167,7 @@ function onError(err: { name: any; }) {
 onMounted(() => {
   let uTemp = localStorage.getItem('username') || '';
   uName.value = uTemp;
+ // console.log(`ItemsCount: ${localStorage.getItem('cartItemsCount') || 0}`)
 })
 </script>
 

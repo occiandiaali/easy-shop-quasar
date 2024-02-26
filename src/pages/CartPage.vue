@@ -31,7 +31,7 @@
             </q-list>
             <div style="margin-top: 16px;margin-left: 48px;">
             <p style="font-size: 18px;"><strong>VAT</strong>: 0.0</p>
-            <p style="font-size: 24px;"><strong>Total:</strong> <span style="font-size: small;">NGN</span> {{ new Intl.NumberFormat('en-NG').format(cartTotal) }}</p>
+            <p style="font-size: 24px;"><strong>Total:</strong> <span style="font-size: small;">NGN</span> {{ new Intl.NumberFormat('en-NG').format(cartStore.totalCost) }}</p>
             </div>
             <q-btn style="margin-left: 60px;" color="grey-4" text-color="purple" glossy unelevated icon="credit_card" label="Pay with Paystack" @click="payWithPaystack" />
         </div>
@@ -60,23 +60,29 @@ function increment(item) {
   const t = (curr => curr.id === item.id);
   if (t) {
     item.qty += 1;
-    cartTotal.value += Number(item.price);
+   // cartTotal.value += Number(item.price);
+   cartStore.totalCost += Number(item.price);
+    localStorage.setItem('cartTotalAmt', JSON.stringify(cartStore.totalCost));
   }
 }
 function decrement(item) {
   const u = (curr => curr.id === item.id);
   if (u && (item.qty === 1 && cart.value.length === 1)) {
     clearCart();
-    cart.value = [];
-    cartTotal.value = 0;
   } else if (u && item.qty > 1) {
     item.qty -= 1;
-    cartTotal.value -= Number(item.price);
+   // cartTotal.value -= Number(item.price);
+     cartStore.totalCost -= Number(item.price);
+     localStorage.setItem('cartTotalAmt', JSON.stringify(cartStore.totalCost));
   } else {
         if (window.confirm('You want to remove this item from your cart?')) {
-     cartTotal.value -= Number(item.price);
+    // cartTotal.value -= Number(item.price);
+    cartStore.totalCost -= Number(item.price);
+      localStorage.setItem('cartTotalAmt', JSON.stringify(cartStore.totalCost));
       cartStore.totalItems--;
+      localStorage.setItem('cartItemsCount', JSON.stringify(cartStore.totalItems));
       cart.value.splice(cart.value.indexOf(item), 1);
+      localStorage.setItem('cartItems', JSON.stringify(cart.value));
     }
   }
 }
@@ -86,14 +92,17 @@ function clearCart() {
   cartStore.totalCost = 0;
   cartStore.totalItems = 0;
    cart.value = [];
- cartTotal.value = 0;
+ //cartTotal.value = 0;
+ localStorage.removeItem('cartItems');
+ localStorage.removeItem('cartItemsCount');
+ localStorage.removeItem('cartTotalAmt');
 }
 
 function payWithPaystack() {
   let handler = PaystackPop.setup({
     key: 'pk_test_b0d0cb50a1b039f53f0b3564d02cebcf0a19c37b',
     email: userEmail.value,
-    amount: Number(cartTotal.value * 100),
+    amount: parseInt(cartTotal.value*100),
     callback: function (response) {
       clearCart()
       console.log(`Callback Paid: ${JSON.stringify(response)}`)
@@ -109,5 +118,7 @@ function payWithPaystack() {
 onMounted(() => {
   let str = localStorage.getItem('useremail');
   userEmail.value = str;
+  console.log(`Total: ${Number(cartTotal.value).toFixed(2)}`)
+  console.log(`Total100: ${parseInt(cartTotal.value*100)}`)
 })
 </script>

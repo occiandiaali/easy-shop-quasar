@@ -2,17 +2,23 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export type CartItem = {
-    name: string; 
-    price: number, 
-    id: string, 
+    name: string 
+    price: number 
+    id: string 
     qty: number
 }
+
+// export type Transaction = {
+//     purchase: CartItem[]
+//     createdAt: Date
+// }
 
 export const useCartStore = defineStore('cartStore', () => {
     const company = ref('WiseBuyers Supermart');
     const email = ref('');
     const username = ref('')
     const items = ref<CartItem[]>(JSON.parse(localStorage.getItem('cartItems') || '[]'));
+    const transactions = ref(JSON.parse(localStorage.getItem('transactions') || '[]'))
 
     const totalItems = ref(JSON.parse(localStorage.getItem('cartItemsCount') || '0'));
     const totalCost = ref(JSON.parse(localStorage.getItem('cartTotalAmt') || '0'));
@@ -35,5 +41,5 @@ export const useCartStore = defineStore('cartStore', () => {
         }
     }
 
-    return {addToCart, company, email, items, totalCost, totalItems, username}
+    return {addToCart, company, email, transactions, items, totalCost, totalItems, username}
 })

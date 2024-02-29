@@ -3,9 +3,10 @@
         <q-icon name="arrow_back" @click="back" size="28px" class="q-pa-md"/>
         <div class="q-pa-md justify-center">
             <span style="font-size: 24px;margin: 10px;font-weight: 600;">My Cart</span>
-        <div v-if="cart.length < 1">
+        <div v-if="cart.length < 1" style="display: flex;flex-direction: column; justify-content: center;align-items: center;">
             <h4>Nothing to see here.</h4>
-            <p>Go scan some items to get started. ;) </p>
+            <q-icon name="remove_shopping_cart" size="148px" color="accent" />
+            <p class="text-subtitle1 q-mt-md">Go scan some items to get started. ;) </p>
         </div>
         <div v-else style="margin-top: 24px;">
 
@@ -102,13 +103,19 @@ function payWithPaystack() {
   let handler = PaystackPop.setup({
     key: 'pk_test_b0d0cb50a1b039f53f0b3564d02cebcf0a19c37b',
     email: userEmail.value,
-    amount: parseInt(cartTotal.value*100),
+   // amount: parseInt(cartTotal.value*100),
+   amount: parseInt(cartStore.totalCost*100),
     callback: function (response) {
-      clearCart()
+      
+      cartStore.transactions.createdAt = new Date().toLocaleString();
+      cartStore.transactions.unshift(cartStore.items);
+      console.log(`CartPage cartstore transact created: ${JSON.stringify(cartStore.transactions)}`)
+      localStorage.setItem('transactions', JSON.stringify(cartStore.transactions));
       console.log(`Callback Paid: ${JSON.stringify(response)}`)
-      alert(`Thanks for your shopping!\nYour receipt has been sent to ${userEmail.value}`)
+      clearCart()
     },
     onClose: function () {
+     // alert(`Thanks for your shopping!\nYour receipt has been sent to ${userEmail.value}`)
       console.log('Happen after popup closed.')
     }
   });
@@ -120,5 +127,6 @@ onMounted(() => {
   userEmail.value = str;
   console.log(`Total: ${Number(cartTotal.value).toFixed(2)}`)
   console.log(`Total100: ${parseInt(cartTotal.value*100)}`)
+  console.log(`Total200: ${parseInt(cartStore.totalCost*100)}`)
 })
 </script>

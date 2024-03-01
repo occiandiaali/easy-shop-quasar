@@ -4,8 +4,8 @@
 <div class="q-pa-md justify-center">
 <h3 class="text-h5 text-center">My transactions</h3>
 <div v-if="deals.length < 1">
-<q-icon name="summarize" color="accent" size="250px" style="margin-left: 48px;" />
-<p class="text-subtitle1">Your transactions history will show here.</p>
+<q-icon class="fixed-center" name="summarize" color="accent" size="250px" />
+<p class="text-h6 text-center">Your transactions history will show here.</p>
 </div>
 <div v-else class="q-pa-md fixed-center q-mt-xl" style="max-width: 380px;">
 <q-list bordered separator>

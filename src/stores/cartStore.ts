@@ -8,17 +8,17 @@ export type CartItem = {
     qty: number
 }
 
-// export type Transaction = {
-//     purchase: CartItem[]
-//     createdAt: Date
-// }
+export type Transaction = {
+    basket: CartItem[]
+    dateTime: Date
+}
 
 export const useCartStore = defineStore('cartStore', () => {
     const company = ref('WiseBuyers Supermart');
     const email = ref('');
     const username = ref('')
     const items = ref<CartItem[]>(JSON.parse(localStorage.getItem('cartItems') || '[]'));
-    const transactions = ref(JSON.parse(localStorage.getItem('transactions') || '[]'))
+    const transactions = ref<Transaction>(JSON.parse(localStorage.getItem('transactions') || '[]'))
 
     const totalItems = ref(JSON.parse(localStorage.getItem('cartItemsCount') || '0'));
     const totalCost = ref(JSON.parse(localStorage.getItem('cartTotalAmt') || '0'));

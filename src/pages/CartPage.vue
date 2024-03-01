@@ -103,16 +103,17 @@ function payWithPaystack() {
   let handler = PaystackPop.setup({
     key: 'pk_test_b0d0cb50a1b039f53f0b3564d02cebcf0a19c37b',
     email: userEmail.value,
-   // amount: parseInt(cartTotal.value*100),
    amount: parseInt(cartStore.totalCost*100),
     callback: function (response) {
-      
-      cartStore.transactions.createdAt = new Date().toLocaleString();
-      cartStore.transactions.unshift(cartStore.items);
-      console.log(`CartPage cartstore transact created: ${JSON.stringify(cartStore.transactions)}`)
+      if (response.status !== 'success') {
+        console.log('Oops! Something went wrong.');
+      }
+      cartStore.transactions.unshift([{basket: cartStore.items, dateTime: new Date().toLocaleString()}]);
+      console.log(`Basket Items: ${JSON.stringify(cartStore.transactions)} - Type: ${typeof cartStore.transactions}`)
       localStorage.setItem('transactions', JSON.stringify(cartStore.transactions));
-      console.log(`Callback Paid: ${JSON.stringify(response)}`)
-      clearCart()
+      console.log(`Callback Paid: ${JSON.stringify(response)}`);
+    
+      clearCart();
     },
     onClose: function () {
      // alert(`Thanks for your shopping!\nYour receipt has been sent to ${userEmail.value}`)

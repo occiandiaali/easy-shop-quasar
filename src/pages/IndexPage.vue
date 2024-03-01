@@ -55,7 +55,7 @@
            ></qrcode-stream>
         </div>
       </div>
-      <span style="font-size: large;margin-left: 45px;font-weight: 500;">Tap the camera icon to scan</span>
+      <h4 class="text-h5 text-center">Tap the camera icon to scan</h4>
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
             <q-btn fab icon="shopping_cart" color="accent" @click="toCart">
               <q-badge color="red" floating>{{ cartStore.totalItems }}</q-badge>

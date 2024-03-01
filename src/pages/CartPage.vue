@@ -9,7 +9,7 @@
             <p class="text-subtitle1 q-mt-md">Go scan some items to get started. ;) </p>
         </div>
         <div v-else style="margin-top: 24px;">
-
+        <q-btn outline rounded color="accent" label="Clear cart" class="fixed-top-right q-ma-lg" @click="clearCart"/>
             <q-list>
                 
                     <q-card class="my-card" style="margin-bottom: 16px;" v-for="item in cart" :key="item.id">

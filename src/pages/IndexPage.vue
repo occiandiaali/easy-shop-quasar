@@ -16,11 +16,11 @@
           <q-icon :class="{ 'example-fab-animate': opened === true }" name="close" />
         </template>
 
-        <!-- <q-fab-action color="primary" external-label @click="onClick">
+        <q-fab-action color="primary" external-label @click="toInfo">
           <template v-slot:icon>
-            <q-icon name="person" @click="toAccount"/>
+            <q-icon name="info" />
           </template>
-        </q-fab-action> -->
+        </q-fab-action>
         <q-fab-action color="secondary" external-label @click="toHistory">
           <template v-slot:icon>
             <q-icon name="history" />
@@ -129,6 +129,10 @@ router.push({path: '/qr-generator'})
 
 function toHistory() {
 router.push({path: '/history'})
+}
+
+function toInfo() {
+router.push({path: '/info'})
 }
 
 function toggleScan() {

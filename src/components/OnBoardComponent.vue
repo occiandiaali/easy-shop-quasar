@@ -40,8 +40,11 @@
           <div class="q-mt-md text-center">
             
             <q-input outlined v-model="username" label="Username" /><br/>
-            <q-input outlined v-model="email" label="Email" /><br/>
-            <q-btn :disable="(!email || !username)" color="purple" label="Proceed" @click="onContinue"/>
+            <q-input outlined v-model="email" 
+            :rules="[val => isValidEmail(val) || 'Valid email address required!']"
+            label="Email" /><br/>
+            <!-- <q-btn :disable="(!email || !username)" color="purple" label="Proceed" @click="onContinue"/> -->
+            <q-btn :disable="(email.length < 6 || username.length < 3)" color="purple" label="Proceed" @click="onContinue"/>
           </div>
         </q-carousel-slide>
       </q-carousel>
@@ -69,9 +72,16 @@
 
   const router = useRouter();
 
+
   const slide = ref('style');
   const username = ref('')
   const email = ref('')
+
+  //const EMAIL_REGEX = '/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i'
+  const isValidEmail = (email) => {
+  const regex = /^[A-Za-z0-9+_.-]+@(.+)$/;
+  return regex.test(email);
+};
  // const lorem = 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque voluptatem totam, architecto cupiditate officia rerum, error dignissimos praesentium libero ab nemo provident incidunt ducimus iusto perferendis porro earum. Totam, numquam?';
    const slide1Text = 'EasyShop makes your shopping experience..easier. Enjoy in-store shopping without the stress of standing on a queue when it is time to checkout. ';
   const slide2Text = 'Simply scan the QR Code for the item you want to buy to add it to your cart. Scan each item only once, then increment the quantity you want on your cart page.';

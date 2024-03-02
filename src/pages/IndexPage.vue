@@ -5,6 +5,7 @@
       style="height: 40px;max-width: 120px;border-radius: 100%;margin: 16px;"
       alt="easy-shop"
       />
+       <p class="text-subtitle1 q-pl-lg text-weight-medium">Hello, {{ uName }}</p>
       <div class="q-ma-md fixed-top-right" id="fab-div">
         <q-fab color="purple" direction="down" >
         <template v-slot:icon="{ opened }">
@@ -15,11 +16,11 @@
           <q-icon :class="{ 'example-fab-animate': opened === true }" name="close" />
         </template>
 
-        <q-fab-action color="primary" external-label @click="onClick">
+        <!-- <q-fab-action color="primary" external-label @click="onClick">
           <template v-slot:icon>
             <q-icon name="person" @click="toAccount"/>
           </template>
-        </q-fab-action>
+        </q-fab-action> -->
         <q-fab-action color="secondary" external-label @click="toHistory">
           <template v-slot:icon>
             <q-icon name="history" />
@@ -55,6 +56,7 @@
            ></qrcode-stream>
         </div>
       </div>
+     
       <h4 class="text-h5 text-center">Tap the camera icon to scan</h4>
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
             <q-btn fab icon="shopping_cart" color="accent" @click="toCart">
@@ -117,24 +119,16 @@ ctx.stroke()
 //   }
 // }
 
-function onClick () {
-console.log('Clicked...')
-}
-
-function toAccount() {
-router.push({path: '/app/account'})
-}
-
 function toCart() {
-router.push({path: '/app/cart'})
+router.push({path: '/cart'})
 }
 
 function toQRCreate() {
-router.push({path: '/app/qr-generator'})
+router.push({path: '/qr-generator'})
 }
 
 function toHistory() {
-router.push({path: '/app/history'})
+router.push({path: '/history'})
 }
 
 function toggleScan() {
@@ -165,7 +159,7 @@ function onError(err: { name: any; }) {
 }
 
 onMounted(() => {
-  let uTemp = localStorage.getItem('username') || '';
+  let uTemp = localStorage.getItem('userName') || '';
   uName.value = uTemp;
  // console.log(`ItemsCount: ${localStorage.getItem('cartItemsCount') || 0}`)
 })

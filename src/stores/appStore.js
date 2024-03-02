@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import {  ref } from 'vue';
 
 export const useAppStore = defineStore('appStore', () => {
         
         const darkMode = ref(false);
+        const useremail = ref(localStorage.getItem('userEmail') || '');
+        const username = ref('');
 
     const toggleDarkMode = () => {
         darkMode.value = !darkMode.value;
@@ -13,5 +15,5 @@ export const useAppStore = defineStore('appStore', () => {
             document.documentElement.classList.remove('dark');
         }
     }
-    return {darkMode, toggleDarkMode}
+    return {darkMode, toggleDarkMode, username, useremail}
 })

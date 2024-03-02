@@ -1,5 +1,5 @@
 <template>
-    <q-page style="background-color: lightgrey;">
+    <q-page class="bg-purple-1">
         <q-icon name="arrow_back" @click="back" size="28px" class="q-pa-md"/>
         <div class="q-pa-md justify-center">
             <span style="font-size: 24px;margin: 10px;font-weight: 600;">My Cart</span>
@@ -10,9 +10,9 @@
         </div>
         <div v-else style="margin-top: 24px;">
         <q-btn outline rounded color="accent" label="Clear cart" class="fixed-top-right q-ma-lg" @click="clearCart"/>
-            <q-list>
+        <q-list>
                 
-                    <q-card class="my-card" style="margin-bottom: 16px;" v-for="item in cart" :key="item.id">
+        <q-card class="my-card" style="margin-bottom: 16px;" v-for="item in cart" :key="item.id">
       <q-card-section class="bg-purple text-white">
         <div class="text-h6">{{ item.item }}</div>
         <span style="font-size: 12px;"> {{ item.price }} naira each</span>
@@ -42,16 +42,18 @@
 
 <script setup>
 import {useRouter} from 'vue-router';
-import {useCartStore} from '../stores/cartStore'
-import { onMounted, ref } from 'vue';
+import { useAppStore } from 'src/stores/appStore';
+import { useCartStore} from '../stores/cartStore';
+import { ref } from 'vue';
 
 const router = useRouter();
-const cartStore = useCartStore()
+const appStore = useAppStore();
+const cartStore = useCartStore();
 
 let cart = ref(cartStore.items);
 
-let cartTotal = ref(cartStore.totalCost);
-let userEmail = ref('')
+//let cartTotal = ref(cartStore.totalCost);
+//let userEmail = ref('')
 
 function back() {
     router.back();
@@ -61,7 +63,7 @@ function increment(item) {
   const t = (curr => curr.id === item.id);
   if (t) {
     item.qty += 1;
-   // cartTotal.value += Number(item.price);
+   
    cartStore.totalCost += Number(item.price);
     localStorage.setItem('cartTotalAmt', JSON.stringify(cartStore.totalCost));
   }
@@ -72,12 +74,12 @@ function decrement(item) {
     clearCart();
   } else if (u && item.qty > 1) {
     item.qty -= 1;
-   // cartTotal.value -= Number(item.price);
+  
      cartStore.totalCost -= Number(item.price);
      localStorage.setItem('cartTotalAmt', JSON.stringify(cartStore.totalCost));
   } else {
         if (window.confirm('You want to remove this item from your cart?')) {
-    // cartTotal.value -= Number(item.price);
+    
     cartStore.totalCost -= Number(item.price);
       localStorage.setItem('cartTotalAmt', JSON.stringify(cartStore.totalCost));
       cartStore.totalItems--;
@@ -93,7 +95,7 @@ function clearCart() {
   cartStore.totalCost = 0;
   cartStore.totalItems = 0;
    cart.value = [];
- //cartTotal.value = 0;
+
  localStorage.removeItem('cartItems');
  localStorage.removeItem('cartItemsCount');
  localStorage.removeItem('cartTotalAmt');
@@ -102,7 +104,8 @@ function clearCart() {
 function payWithPaystack() {
   let handler = PaystackPop.setup({
     key: 'pk_test_b0d0cb50a1b039f53f0b3564d02cebcf0a19c37b',
-    email: userEmail.value,
+   // email: userEmail.value,
+   email: appStore.useremail,
    amount: parseInt(cartStore.totalCost*100),
     callback: function (response) {
       if (response.status !== 'success') {
@@ -123,11 +126,11 @@ function payWithPaystack() {
   handler.openIframe();
 }
 
-onMounted(() => {
-  let str = localStorage.getItem('useremail');
-  userEmail.value = str;
-  console.log(`Total: ${Number(cartTotal.value).toFixed(2)}`)
-  console.log(`Total100: ${parseInt(cartTotal.value*100)}`)
-  console.log(`Total200: ${parseInt(cartStore.totalCost*100)}`)
-})
+// onMounted(() => {
+//   let str = localStorage.getItem('useremail');
+//   userEmail.value = str;
+//   console.log(`Total: ${Number(cartTotal.value).toFixed(2)}`)
+//   console.log(`Total100: ${parseInt(cartTotal.value*100)}`)
+//   console.log(`Total200: ${parseInt(cartStore.totalCost*100)}`)
+// })
 </script>

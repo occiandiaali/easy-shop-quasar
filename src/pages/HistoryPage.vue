@@ -1,51 +1,39 @@
 <template>
-<q-page style="background-color: lightgrey;">
-<q-icon name="arrow_back" @click="router.back" size="28px" class="q-pa-md"/>
-<div class="q-pa-md justify-center">
-<h3 class="text-h5 text-center">My transactions</h3>
-<div v-if="deals.length < 1">
-<q-icon class="fixed-center" name="summarize" color="accent" size="250px" />
-<p class="text-h6 text-center">Your transactions history will show here.</p>
+
+<q-icon name="arrow_back" @click="back" size="28px" class="q-pa-md"/>
+<div class="q-pa-md">
+<div v-if="cartStore.transactions.flat().length < 1" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+<q-icon name="summarize" color="accent" size="200px" />
+<span class="text-h6 text-center">Your transactions history will show here.</span>
 </div>
-<div v-else class="q-pa-md fixed-center q-mt-xl" style="max-width: 380px;">
-<q-list bordered separator>
-      <q-item v-for="(t, i) in deals" :key="i" style="margin-bottom: 8px;">
-        <q-item-section>
-          <q-item-label class="text-subtitle2 text-grey-7 q-pt-sm">{{ t.dateTime }}</q-item-label>
+<q-list v-else>
+<q-btn outline rounded color="accent" label="Export" class="fixed-top-right q-ma-lg" @click="exportHistory"/>
+<q-card v-for="(t, i) in cartStore.transactions.flat()" :key="i" style="margin-bottom: 16px;" class="q-pa-md rounded-borders bg-purple-1">
+<span class="text-subtitle2 text-grey-7 q-mt-md">{{ t.dateTime }}</span>
+<q-card-section v-for="b in t.basket" :key="b.id" class="q-pa-sm">
+        <div class="text-h6">{{ b.item }}</div>
+        <span class="text-subtitle1"> <span class="text-caption">NGN</span>{{ new Intl.NumberFormat('en-NG').format(b.price) }} x {{ b.qty }}</span>
         <hr />
-        <div v-for="b in t.basket" :key="b.id" class="q-pa-sm">
-          <q-item-label class="text-h6 text-weight-bold">{{ b.item }}</q-item-label>
-          <q-item-label class="text-subtitle1 q-pb-sm"><span class="text-subtitle2">NGN</span>{{ new Intl.NumberFormat('en-NG').format(b.price) }} x {{ b.qty }}</q-item-label>
-          <hr style="width: 250px;height: 0.3px;color: lightgray;"/>
-        </div>
-        </q-item-section>
-      </q-item>
+</q-card-section>
+</q-card>
 </q-list>
-
 </div>
 
-</div>
-</q-page>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
 import {useRouter} from 'vue-router';
 import {useCartStore} from '../stores/cartStore';
 
 const router = useRouter();
 const cartStore = useCartStore()
 
-let deals = ref([])
+function back() {
+    router.back();
+}
 
-onMounted(() => {
-// const str = localStorage.getItem('transactions');
-// let strParse = JSON.parse(str);
-deals.value = cartStore.transactions.flat();
-console.log(`DealsDotVal: ${JSON.stringify(deals.value)}`);
-//console.log(`Transacted noFlat: ${cartStore.transactions}`);
-console.log(`Flat Transacted Stringified: ${JSON.stringify(cartStore.transactions.flat())}`);
-console.log(`TypeOf Store transactions: ${typeof cartStore.transactions}`);
-console.log(`TypeOf deals.value: ${typeof deals.value}`);
-})
+function exportHistory() {
+  localStorage.removeItem('transactions');
+  location.reload();
+}
 </script>

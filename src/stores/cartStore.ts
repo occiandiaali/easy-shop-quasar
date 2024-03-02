@@ -15,8 +15,7 @@ export type Transaction = {
 
 export const useCartStore = defineStore('cartStore', () => {
     const company = ref('WiseBuyers Supermart');
-    const email = ref('');
-    const username = ref('')
+
     const items = ref<CartItem[]>(JSON.parse(localStorage.getItem('cartItems') || '[]'));
     const transactions = ref<Transaction>(JSON.parse(localStorage.getItem('transactions') || '[]'))
 
@@ -41,5 +40,5 @@ export const useCartStore = defineStore('cartStore', () => {
         }
     }
 
-    return {addToCart, company, email, transactions, items, totalCost, totalItems, username}
+    return {addToCart, company, transactions, items, totalCost, totalItems}
 })

@@ -57,10 +57,12 @@
         </div>
       </div>
      
-      <h4 class="text-h5 text-center">Tap the camera icon to scan</h4>
+      <h4 class="text-h5 text-center">Tap the camera image to scan</h4>
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
             <q-btn fab icon="shopping_cart" color="accent" @click="toCart">
-              <q-badge color="red" floating>{{ cartStore.totalItems }}</q-badge>
+
+            <q-badge :class="{pulse: cartStore.totalItems > 0}" rounded color="pink" floating>{{ cartStore.totalItems }}</q-badge>
+        
             </q-btn>
           </q-page-sticky>
   </q-page>
@@ -202,6 +204,22 @@ perspective: 1000px;
   40%, 60% {
     transform: translate3d(4px,0,0);
   }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
 }
 
 </style>

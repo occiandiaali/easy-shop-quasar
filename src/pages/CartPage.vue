@@ -6,7 +6,7 @@
         <div v-if="cart.length < 1" style="display: flex;flex-direction: column; justify-content: center;align-items: center;">
             <h4 class="text-h5 text-grey-8">Nothing to see here yet.</h4>
             <q-icon name="remove_shopping_cart" size="140px" color="accent" />
-            <p class="text-subtitle1 q-mt-md">Go scan some items to get started. ;) </p>
+            <p class="text-h6 q-mt-lg">Go scan some items! ;) </p>
         </div>
         <div v-else style="margin-top: 24px;">
         <q-btn outline rounded color="accent" label="Clear cart" class="fixed-top-right q-ma-lg" @click="clearCart"/>
